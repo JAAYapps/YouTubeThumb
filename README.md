@@ -8,12 +8,6 @@ YouTube Thumb is a tool created to help test and evaluate YouTube thumbnails. Th
 ## Preview
 ![Program Screenshot](Program.png)
 
-## Repository Contents
-- `YouTubeThumb.sln`: The solution file containing the complete project
-- `Program.png`: Screenshot or image of the program
-- `.gitignore`: Git ignore file for the project
-- `README.md`: This documentation file
-
 ## Last Updates
 - README created: March 01, 2025 (just now)
 - Program assets updated: March 01, 2025 (within last 19 minutes)
