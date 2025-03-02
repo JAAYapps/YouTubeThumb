@@ -36,20 +36,19 @@ jobs:
     - name: Restore Dependencies
       run: dotnet restore ${{ env.Solution_Name }}
 
-    # Build the application for each platform
+    # Build the application (without RID)
     - name: Build Application
       run: |
         dotnet build ${{ env.Solution_Name }} \
           -c ${{ matrix.configuration }} \
-          --no-restore \
-          -r ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }}
+          --no-restore
 
     # Optional: Run tests if you have any
     - name: Run Tests
       run: dotnet test ${{ env.Solution_Name }} --no-build -c ${{ matrix.configuration }}
       if: success()
 
-    # Publish the application (self-contained)
+    # Publish the application (with platform-specific RID)
     - name: Publish Application
       run: |
         dotnet publish ${{ env.Solution_Name }} \
