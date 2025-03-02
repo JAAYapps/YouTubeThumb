@@ -1,0 +1,68 @@
+name: Avalonia Cross-Platform Build
+
+on:
+  push:
+    branches: [ "master" ] 
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]  # Build on all three platforms
+        configuration: [Debug, Release]                    # Build both configurations
+
+    runs-on: ${{ matrix.os }}  # Dynamically set the runner based on the matrix
+
+    env:
+      Solution_Name: YouTubeThumb.sln  # Update this to match your solution file name
+      DOTNET_VERSION: 8.0.x           # Avalonia works well with .NET 8
+
+    steps:
+    # Checkout the repository
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Install .NET SDK
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Restore dependencies
+    - name: Restore Dependencies
+      run: dotnet restore ${{ env.Solution_Name }}
+
+    # Build the application for each platform
+    - name: Build Application
+      run: |
+        dotnet build ${{ env.Solution_Name }} \
+          -c ${{ matrix.configuration }} \
+          --no-restore \
+          -p:Platform="AnyCPU" \
+          -p:RuntimeIdentifier=${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }}
+
+    # Optional: Run tests if you have any
+    - name: Run Tests
+      run: dotnet test ${{ env.Solution_Name }} --no-build -c ${{ matrix.configuration }}
+      if: success()  # Only run if build succeeds
+
+    # Publish the application (self-contained)
+    - name: Publish Application
+      run: |
+        dotnet publish ${{ env.Solution_Name }} \
+          -c ${{ matrix.configuration }} \
+          -r ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }} \
+          --self-contained true \
+          --no-build \
+          -o ./publish/${{ matrix.os }}-${{ matrix.configuration }}
+
+    # Upload build artifacts
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: YouTubeThumb-${{ matrix.os }}-${{ matrix.configuration }}
+        path: ./publish/${{ matrix.os }}-${{ matrix.configuration }}
