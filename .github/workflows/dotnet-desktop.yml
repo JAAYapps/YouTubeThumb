@@ -17,6 +17,7 @@ jobs:
 
     env:
       Solution_Name: YouTubeThumb.sln
+      Project_Name: YouTubeThumb.csproj  # Adjust if your .csproj has a different name
       DOTNET_VERSION: 8.0.x
 
     steps:
@@ -48,10 +49,10 @@ jobs:
       run: dotnet test ${{ env.Solution_Name }} --no-build -c ${{ matrix.configuration }}
       if: success()
 
-    # Publish the application (with platform-specific RID)
+    # Publish the application (with platform-specific RID, targeting the .csproj)
     - name: Publish Application
       run: |
-        dotnet publish ${{ env.Solution_Name }} \
+        dotnet publish ${{ env.Project_Name }} \
           -c ${{ matrix.configuration }} \
           -r ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }} \
           --self-contained true \
