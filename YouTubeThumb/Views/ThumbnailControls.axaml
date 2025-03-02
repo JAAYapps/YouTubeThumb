@@ -1,0 +1,81 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:YouTubeThumb.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="330" d:DesignHeight="350" Width="330" Height="350" CanResize="False"
+        x:Class="YouTubeThumb.Views.ThumbnailControls"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/youtube_thumb.ico"
+        WindowStartupLocation="CenterScreen"
+        Closed="TopLevel_OnClosed"
+        Opened="TopLevel_OnOpened"
+        Loaded="Control_OnLoaded"
+        Title="Thumbnail Controls">
+        
+        <Design.DataContext>
+                <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+                <vm:MainWindowViewModel/>
+        </Design.DataContext>
+        
+        <Grid Margin="0">
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- New Thumbnail Image Path -->
+                <StackPanel Grid.Row="0">
+                        <StackPanel  Orientation="Horizontal" Margin="10,10,0,10">
+                                <TextBlock Text="Thumbnail Image Path: "/>
+                                <TextBlock Text="{Binding ImageName}"/>
+                        </StackPanel>
+                        <Button Grid.Row="2" Content="Open Image" Command="{Binding OpenThumbnailImageCommand}" Width="100" HorizontalAlignment="Left" Margin="10,0,0,10"/>
+                </StackPanel>
+
+                <!-- New Profile Image Path -->
+                <StackPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                                <TextBlock Text="Profile Image Path: "/>
+                                <TextBlock Text="{Binding ProfileImageName}"/>
+                        </StackPanel>
+                        <Button Grid.Row="2" Content="Open Image" Command="{Binding OpenProfileImageCommand}" Width="100" HorizontalAlignment="Left" Margin="10,0,0,10"/>
+                </StackPanel>
+                
+                <!-- Title Text -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,0,0,10">
+                        <Label Content="Title:" VerticalAlignment="Center" Margin="0,0,70,0"/>
+                        <TextBox VerticalAlignment="Center" Width="200" Text="{Binding Title, Mode=TwoWay}"/>
+                </StackPanel>
+                
+                <!-- Video Time Text -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,0,0,10">
+                        <Label Content="Video Length:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox VerticalAlignment="Center" Width="200" Text="{Binding VideoTime, Mode=TwoWay}"/>
+                </StackPanel>
+                
+                <!-- Channel Text -->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="10,0,0,10">
+                        <Label Content="Channel:" VerticalAlignment="Center" Margin="0,0,45,0"/>
+                        <TextBox VerticalAlignment="Center" Width="200" Text="{Binding ChannelName, Mode=TwoWay}"/>
+                </StackPanel>
+                
+                <!-- Views Text -->
+                <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="10,0,0,10">
+                        <Label Content="Views:" VerticalAlignment="Center" Margin="0,0,60,0"/>
+                        <TextBox VerticalAlignment="Center" Width="200" Text="{Binding Views, Mode=TwoWay}"/>
+                </StackPanel>
+                
+                <!-- Time Text -->
+                <StackPanel Grid.Row="6" Orientation="Horizontal" Margin="10,0,0,10">
+                        <Label Content="Time:" VerticalAlignment="Center" Margin="0,0,67,0"/>
+                        <TextBox VerticalAlignment="Center" Width="200" Text="{Binding Time, Mode=TwoWay}"/>
+                </StackPanel>
+        </Grid>
+</Window>

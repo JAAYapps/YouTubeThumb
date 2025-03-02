@@ -1,0 +1,72 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:YouTubeThumb.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="346" d:DesignHeight="308" Width="346" Height="308" CanResize="False"
+        x:Class="YouTubeThumb.Views.Thumbnail"
+        x:DataType="vm:MainWindowViewModel"
+        Closed="TopLevel_OnClosed"
+        Opened="TopLevel_OnOpened"
+        Loaded="Control_OnLoaded"
+        Icon="/Assets/youtube_thumb.ico"
+        Title="YouTube Thumb">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Grid Width="346" Height="308" Background="Black">
+        <Grid Margin="10">
+            <!-- Define rows: Thumbnail at the top, Text/Details below -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Thumbnail Section with White Background -->
+            <Border Grid.Row="0" Width="328" Height="184.5" CornerRadius="10" ClipToBounds="True" Background="Gray">
+                <Image Source="{Binding Image}" Stretch="UniformToFill"/>
+            </Border>
+            
+            <!-- Timestamp in top-right corner -->
+            <Border Grid.Row="0" CornerRadius="4" ClipToBounds="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,5">
+                <Panel>
+                    <Rectangle Fill="#FF000000" Opacity="100"/>
+                    <TextBlock Text="{Binding VideoTime}" Foreground="White" FontSize="11" Padding="4,3"/>
+                </Panel>
+            </Border>
+            <!-- Circular profile -->
+            <Border Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="37" Height="37" Margin="0,15,8,0" ClipToBounds="True" CornerRadius="50">
+                <Image Source="{Binding ProfileImage}"></Image>
+            </Border>
+            <!-- Text and Metadata Section -->
+            <StackPanel Grid.Row="1" Margin="46,15,0,0">
+                <!-- Post Text -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                    <TextBlock Text="{Binding Title}" 
+                               FontSize="16"
+                               TextWrapping="Wrap"
+                               Foreground="White"
+                               Width="250"
+                               LineSpacing="3"
+                               MaxLines="2"
+                               LetterSpacing="0.1"
+                               TextTrimming="CharacterEllipsis"
+                               FontFamily="{StaticResource Roboto}"/>
+            </StackPanel>
+
+            <!-- Name of Channel -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0"> <!-- Offset for profile alignment -->
+                <TextBlock Text="{Binding ChannelName}" 
+                           FontSize="13" 
+                           Foreground="DarkGray" 
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+            <!-- Views and Time Posted -->
+                <TextBlock Text="{Binding ViewsAndTime}" FontSize="13" Foreground="DarkGray" Margin="0,4,0,0"/> <!-- Offset for profile alignment -->
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
