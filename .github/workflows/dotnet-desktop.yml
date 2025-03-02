@@ -2,7 +2,7 @@ name: Avalonia Cross-Platform Build
 
 on:
   push:
-    branches: [ "master" ] 
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -10,14 +10,14 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]  # Build on all three platforms
-        configuration: [Debug, Release]                    # Build both configurations
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        configuration: [Debug, Release]
 
-    runs-on: ${{ matrix.os }}  # Dynamically set the runner based on the matrix
+    runs-on: ${{ matrix.os }}
 
     env:
-      Solution_Name: YouTubeThumb.sln  # Update this to match your solution file name
-      DOTNET_VERSION: 8.0.x           # Avalonia works well with .NET 8
+      Solution_Name: YouTubeThumb.sln
+      DOTNET_VERSION: 8.0.x
 
     steps:
     # Checkout the repository
@@ -42,13 +42,12 @@ jobs:
         dotnet build ${{ env.Solution_Name }} \
           -c ${{ matrix.configuration }} \
           --no-restore \
-          -p:Platform="AnyCPU" \
-          -p:RuntimeIdentifier=${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }}
+          -r ${{ matrix.os == 'windows-latest' && 'win-x64' || matrix.os == 'macos-latest' && 'osx-x64' || 'linux-x64' }}
 
     # Optional: Run tests if you have any
     - name: Run Tests
       run: dotnet test ${{ env.Solution_Name }} --no-build -c ${{ matrix.configuration }}
-      if: success()  # Only run if build succeeds
+      if: success()
 
     # Publish the application (self-contained)
     - name: Publish Application
